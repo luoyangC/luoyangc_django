@@ -5,6 +5,18 @@ name = "pypi"
 
 [packages]
 django = "==2.0"
+django-crispy-forms = "*"
+django-filter = "*"
+django-guardian = "*"
+django-reversion = "*"
+django-formtools = "*"
+xlwt = "*"
+xlsxwriter = "*"
+django-import-export = "*"
+future = "*"
+"httplib2" = "*"
+pillow = "*"
+django-mdeditor = "*"
 
 [dev-packages]
 

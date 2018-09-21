@@ -988,7 +988,7 @@
 	};
 	
 	/**
-	 * Sets up an input to grow horizontally as the user
+	 * Sets up an input to grow horizontally as the users
 	 * types. If the value is changed manually, you can
 	 * trigger the "update" handler to resize:
 	 *
@@ -1599,7 +1599,7 @@
 		},
 	
 		/**
-		 * Invokes the user-provide option provider / loader.
+		 * Invokes the users-provide option provider / loader.
 		 *
 		 * Note: this function is debounced in the Selectize
 		 * constructor (by `settings.loadDelay` milliseconds)
@@ -1692,7 +1692,7 @@
 		},
 	
 		/**
-		 * Triggered when the user rolls over
+		 * Triggered when the users rolls over
 		 * an option in the autocomplete dropdown menu.
 		 *
 		 * @param {object} e
@@ -1704,7 +1704,7 @@
 		},
 	
 		/**
-		 * Triggered when the user clicks on an option
+		 * Triggered when the users clicks on an option
 		 * in the autocomplete dropdown menu.
 		 *
 		 * @param {object} e
@@ -1741,7 +1741,7 @@
 		},
 	
 		/**
-		 * Triggered when the user clicks on an item
+		 * Triggered when the users clicks on an item
 		 * that has been selected.
 		 *
 		 * @param {object} e
@@ -2044,7 +2044,7 @@
 			var settings = self.settings;
 			var options  = this.getSearchOptions();
 	
-			// validate user-provided result scoring function
+			// validate users-provided result scoring function
 			if (settings.score) {
 				calculateScore = self.settings.score.apply(this, [query]);
 				if (typeof calculateScore !== 'function') {
@@ -2571,7 +2571,7 @@
 		/**
 		 * Invokes the `create` method provided in the
 		 * selectize options that should provide the data
-		 * for the new item, given the user input.
+		 * for the new item, given the users input.
 		 *
 		 * Once this completes, it will be added
 		 * to the item list.
@@ -2685,7 +2685,7 @@
 	
 		/**
 		 * Determines whether or not more items can be added
-		 * to the control without exceeding the user-defined maximum.
+		 * to the control without exceeding the users-defined maximum.
 		 *
 		 * @returns {boolean}
 		 */
@@ -2994,7 +2994,7 @@
 		},
 	
 		/**
-		 * Disables user input on the control. Used while
+		 * Disables users input on the control. Used while
 		 * items are being asynchronously created.
 		 */
 		lock: function() {
@@ -3004,7 +3004,7 @@
 		},
 	
 		/**
-		 * Re-enables user input on the control.
+		 * Re-enables users input on the control.
 		 */
 		unlock: function() {
 			this.isLocked = false;
@@ -3012,7 +3012,7 @@
 		},
 	
 		/**
-		 * Disables user input on the control completely.
+		 * Disables users input on the control completely.
 		 * While disabled, it cannot receive focus.
 		 */
 		disable: function() {
@@ -3025,7 +3025,7 @@
 	
 		/**
 		 * Enables the control so that it can respond
-		 * to focus and user input.
+		 * to focus and users input.
 		 */
 		enable: function() {
 			var self = this;
@@ -3139,7 +3139,7 @@
 	
 		/**
 		 * Determines whether or not to display the
-		 * create item prompt, given a user input.
+		 * create item prompt, given a users input.
 		 *
 		 * @param {string} input
 		 * @return {boolean}

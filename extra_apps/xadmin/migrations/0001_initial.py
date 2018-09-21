@@ -25,7 +25,7 @@ class Migration(migrations.Migration):
                 ('query', models.CharField(blank=True, max_length=1000, verbose_name='Query String')),
                 ('is_share', models.BooleanField(default=False, verbose_name='Is Shared')),
                 ('content_type', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='contenttypes.ContentType')),
-                ('user', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL, verbose_name='user')),
+                ('users', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL, verbose_name='users')),
             ],
             options={
                 'verbose_name': 'Bookmark',
@@ -38,7 +38,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('key', models.CharField(max_length=256, verbose_name='Settings Key')),
                 ('value', models.TextField(verbose_name='Settings Content')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL, verbose_name='user')),
+                ('users', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL, verbose_name='users')),
             ],
             options={
                 'verbose_name': 'User Setting',
@@ -52,7 +52,7 @@ class Migration(migrations.Migration):
                 ('page_id', models.CharField(max_length=256, verbose_name='Page')),
                 ('widget_type', models.CharField(max_length=50, verbose_name='Widget Type')),
                 ('value', models.TextField(verbose_name='Widget Params')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL, verbose_name='user')),
+                ('users', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL, verbose_name='users')),
             ],
             options={
                 'verbose_name': 'User Widget',

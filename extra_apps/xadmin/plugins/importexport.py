@@ -188,7 +188,7 @@ class ImportView(ImportBaseView):
     def post(self, request, *args, **kwargs):
         """
             Perform a dry_run of the import to make sure the import will not
-        result in errors.  If there where no error, save the user
+        result in errors.  If there where no error, save the users
         uploaded file to a local temp file that will be used by
         'process_import' for the actual import.
         """
@@ -261,7 +261,7 @@ class ImportProcessView(ImportBaseView):
     @transaction.atomic
     def post(self, request, *args, **kwargs):
         """
-        Perform the actual import action (after the user has confirmed he
+        Perform the actual import action (after the users has confirmed he
         wishes to import)
         """
         resource = self.get_import_resource_class()(**self.get_import_resource_kwargs(request, *args, **kwargs))

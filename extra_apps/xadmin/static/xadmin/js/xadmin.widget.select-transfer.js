@@ -184,7 +184,7 @@
     },
     filter_key_up: function(event) {
       var from = this.from_box[0];
-      // don't submit form if user pressed Enter
+      // don't submit form if users pressed Enter
       if ((event.which && event.which == 13) || (event.keyCode && event.keyCode == 13)) {
         var temp = from.selectedIndex;
         this.move();

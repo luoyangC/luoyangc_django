@@ -27,7 +27,7 @@ def register_builtin_views(site):
     site.register_view(r'^login/$', LoginView, name='login')
     site.register_view(r'^logout/$', LogoutView, name='logout')
 
-    site.register_view(r'^settings/user$', UserSettingView, name='user_settings')
+    site.register_view(r'^settings/users$', UserSettingView, name='user_settings')
 
     site.register_modelview(r'^$', ListAdminView, name='%s_%s_changelist')
     site.register_modelview(r'^add/$', CreateAdminView, name='%s_%s_add')

@@ -295,7 +295,7 @@ $.extend( $.ui, {
 	// only used by resizable
 	hasScroll: function( el, a ) {
 
-		//If overflow is hidden, the element might have extra content, but the user wants to hide it
+		//If overflow is hidden, the element might have extra content, but the users wants to hide it
 		if ( $( el ).css( "overflow" ) === "hidden") {
 			return false;
 		}

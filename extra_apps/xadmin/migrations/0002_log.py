@@ -28,7 +28,7 @@ class Migration(migrations.Migration):
                 ('action_flag', models.PositiveSmallIntegerField(verbose_name='action flag')),
                 ('message', models.TextField(blank=True, verbose_name='change message')),
                 ('content_type', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='contenttypes.ContentType', verbose_name='content type')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL, verbose_name='user')),
+                ('users', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL, verbose_name='users')),
             ],
             options={
                 'ordering': ('-action_time',),

@@ -316,7 +316,7 @@
                         }
 
                         if (
-                            (settings.minDragDistance>=Math.abs(thePageX-cache.startDragX)) && // Has user met minimum drag distance?
+                            (settings.minDragDistance>=Math.abs(thePageX-cache.startDragX)) && // Has users met minimum drag distance?
                             (cache.hasIntent === false)
                         ) {
                             return;

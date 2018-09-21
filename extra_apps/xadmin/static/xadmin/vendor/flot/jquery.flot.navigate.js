@@ -35,10 +35,10 @@ around; the same for zoom.
 the current viewport.
 
 "cursor" is a standard CSS mouse cursor string used for visual feedback to the
-user when dragging.
+users when dragging.
 
 "frameRate" specifies the maximum number of times per second the plot will
-update itself while the user is panning around on it (set to null to disable
+update itself while the users is panning around on it (set to null to disable
 intermediate pans, the plot will then not update until the mouse button is
 released).
 

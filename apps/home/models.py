@@ -5,7 +5,7 @@ from django.db import models
 
 class Base(models.Model):
 
-    create_time = models.DateTimeField(auto_created=True, verbose_name='创建时间')
+    create_time = models.DateTimeField(auto_now_add=True, verbose_name='创建时间')
     status = models.SmallIntegerField(default=1, verbose_name='状态')
 
     class Meta:

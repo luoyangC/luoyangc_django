@@ -19,6 +19,7 @@ pillow = "*"
 django-mdeditor = "*"
 djangorestframework = "*"
 coreapi = "*"
+djangorestframework-jwt = "*"
 
 [dev-packages]
 

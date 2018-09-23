@@ -8,7 +8,7 @@ __author__ = '骆杨'
 
 
 class FavAdmin(object):
-    model_icon = 'fa fa-heart'
+    model_icon = 'fa fa-star'
 
 
 class CommentAdmin(object):

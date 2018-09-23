@@ -33,7 +33,7 @@ class Article(Base):
 
     update_time = models.DateTimeField(auto_now_add=True, verbose_name='更新时间')
 
-    author = models.ForeignKey(UserProfile, on_delete=models.CASCADE, verbose_name='作者')
+    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, verbose_name='作者')
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='分类')
     view_nums = models.IntegerField(default=0, verbose_name='浏览数')
     comment_nums = models.IntegerField(default=0, verbose_name='评论数')

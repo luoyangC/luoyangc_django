@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "ced8aab3cb4e4cdd11d1344c2f8ca2fc114b302bfaae18f3fd115c583ba5e9ef"
+            "sha256": "6c49d8f0f008ed4d1c63d1f39fb8737e0369d6ac50471044ac032b71d15f7b01"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -101,10 +101,10 @@
         },
         "django-mdeditor": {
             "hashes": [
-                "sha256:a93ed687cd882a12a584fe2e322eee992e9eeb8681bee1da6ece4f6880ca50c1"
+                "sha256:6511b3d96909460efd39be9bfd6f0d01ae0151ec10c3c159646f2b6347a04c92"
             ],
             "index": "pypi",
-            "version": "==0.1.7"
+            "version": "==0.1.8"
         },
         "django-reversion": {
             "hashes": [
@@ -121,6 +121,14 @@
             ],
             "index": "pypi",
             "version": "==3.8.2"
+        },
+        "djangorestframework-jwt": {
+            "hashes": [
+                "sha256:5efe33032f3a4518a300dc51a51c92145ad95fb6f4b272e5aa24701db67936a7",
+                "sha256:ab15dfbbe535eede8e2e53adaf52ef0cf018ee27dbfad10cbc4cbec2ab63d38c"
+            ],
+            "index": "pypi",
+            "version": "==1.11.0"
         },
         "et-xmlfile": {
             "hashes": [
@@ -223,6 +231,13 @@
             "index": "pypi",
             "version": "==5.2.0"
         },
+        "pyjwt": {
+            "hashes": [
+                "sha256:30b1380ff43b55441283cc2b2676b755cca45693ae3097325dea01f3d110628c",
+                "sha256:4ee413b357d53fd3fb44704577afac88e72e878716116270d722723d65b42176"
+            ],
+            "version": "==1.6.4"
+        },
         "pytz": {
             "hashes": [
                 "sha256:a061aa0a9e06881eb8b3b2b43f05b9439d6583c206d0a6c340ff72a7b6669053",
@@ -297,11 +312,11 @@
         },
         "xlsxwriter": {
             "hashes": [
-                "sha256:18716ac3d8cd1f8c73af2a674df954bf4c1ae7a8b5944e1d6ca66815ece9518e",
-                "sha256:b2c7cbe246d1e1d113b4d014a71d1d9bb258f28625512f8df290352d1685be13"
+                "sha256:9db09ab93f462aa8b7559073ac58dcb4c18dc4321f8c04fb9eed0941c81ca0b5",
+                "sha256:b9d45a55c4ca976264f592fb8ceafba52cafe4e381050ade74abf11efa92d097"
             ],
             "index": "pypi",
-            "version": "==1.1.0"
+            "version": "==1.1.1"
         },
         "xlwt": {
             "hashes": [

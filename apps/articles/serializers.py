@@ -19,6 +19,4 @@ class ArticleSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Article
-        fields = ('title', 'content', 'image', 'update_time',
-                  'user', 'category', 'view_nums', 'comment_nums',
-                  'fav_nums', 'like_nums')
+        exclude = ('status', )

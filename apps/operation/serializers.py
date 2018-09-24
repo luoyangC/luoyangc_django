@@ -17,7 +17,7 @@ class FavSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Fav
-        fields = '__all__'
+        exclude = ('status', )
 
 
 class ReplySerializer(serializers.ModelSerializer):
@@ -67,4 +67,4 @@ class CommentDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Comment
-        fields = ('content', 'user', 'like_nums', 'create_time', 'replys', 'create_time')
+        fields = '__all__'

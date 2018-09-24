@@ -1,21 +1,48 @@
 from rest_framework import mixins, viewsets, permissions
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.authentication import SessionAuthentication
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 from .models import Fav, Comment, Reply
-from .serializers import FavSerializer, CommentSerializer, CommentDetailSerializer, ReplySerializer
+from .serializers import FavSerializer, CommentSerializer, CommentDetailSerializer
+from .serializers import ReplySerializer, ReplyDetailSerializer
 from utils.permissions import IsOwnerOrReadOnly
 
 # Create your views here.
 
 
-class FavViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
+class FavViewSet(mixins.ListModelMixin, mixins.CreateModelMixin,
+                 mixins.DestroyModelMixin, mixins.RetrieveModelMixin,
+                 viewsets.GenericViewSet):
+    """
+    list: 收藏列表
+    create: 添加收藏
+    delete: 取消收藏
+    retrieve: 收藏详情
+    """
+    permission_classes = (permissions.IsAuthenticated, IsOwnerOrReadOnly)
+    authentication_classes = (JSONWebTokenAuthentication, SessionAuthentication)
+    lookup_field = 'article_id'
 
-    queryset = Fav.objects.all()
     serializer_class = FavSerializer
 
+    def get_queryset(self):
+        return Fav.objects.filter(user=self.request.user)
 
-class CommentViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, mixins.DestroyModelMixin, viewsets.GenericViewSet):
 
+class CommentViewSet(mixins.ListModelMixin, mixins.CreateModelMixin,
+                     mixins.DestroyModelMixin, mixins.RetrieveModelMixin,
+                     viewsets.GenericViewSet):
+    """
+    list: 评论列表
+    create: 添加评论
+    delete: 删除评论
+    retrieve: 评论详情
+    """
     queryset = Comment.objects.all()
+    permission_classes = (permissions.IsAuthenticated, IsOwnerOrReadOnly)
+    filter_backends = (DjangoFilterBackend, )
+    filter_fields = ('article', )
 
     # 动态配置Serializer
     def get_serializer_class(self):
@@ -23,14 +50,20 @@ class CommentViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, mixins.Dest
             return CommentSerializer
         return CommentDetailSerializer
 
-    def get_permissions(self):
-        if self.action == 'create':
-            return [permissions.IsAuthenticated()]
-        elif self.action == 'delete':
-            return [IsOwnerOrReadOnly()]
-        return []
 
-
-class ReplyViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, mixins.DestroyModelMixin, viewsets.GenericViewSet):
+class ReplyViewSet(mixins.ListModelMixin, mixins.CreateModelMixin,
+                   mixins.DestroyModelMixin, mixins.RetrieveModelMixin,
+                   viewsets.GenericViewSet):
+    """
+    list: 回复列表
+    create: 添加回复
+    delete: 删除回复
+    retrieve: 回复详情
+    """
     queryset = Reply.objects.all()
-    serializer_class = ReplySerializer
+    permission_classes = (IsOwnerOrReadOnly,)
+
+    def get_serializer_class(self):
+        if self.action == 'create':
+            return ReplySerializer
+        return ReplyDetailSerializer

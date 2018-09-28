@@ -50,7 +50,7 @@ urlpatterns = [
     # 文档功能
     path('docs/', include_docs_urls(title='文档')),
     # 获取授权
-    path('api-token-auth/', obtain_jwt_token),
+    path('api/login/', obtain_jwt_token),
     # API入口
     path('api/', include(router.urls)),
 ]

@@ -21,6 +21,7 @@ class EmailVerifySerializer(serializers.ModelSerializer):
         if User.objects.filter(email=email).count():
             raise serializers.ValidationError('用户已存在')
         five_minutes_age = datetime.datetime.now() - datetime.timedelta(hours=0, minutes=5, seconds=0)
+
         if EmailVerifyRecord.objects.filter(create_time__gt=five_minutes_age, email=email):
             raise serializers.ValidationError('距离上次发生不足5分钟，请查看邮件，或稍后再试')
         return email
@@ -31,7 +32,8 @@ class EmailVerifySerializer(serializers.ModelSerializer):
 
 
 class UserRegisterSerializer(serializers.ModelSerializer):
-
+    email = serializers.CharField(required=True, allow_blank=False, label='邮箱', help_text='邮箱',
+                                  validators=[UniqueValidator(queryset=User.objects.all())])
     code = serializers.CharField(max_length=6, min_length=6, write_only=True, label='验证码', help_text='验证码',
                                  error_messages={
                                      'blank': '请输入验证码',
@@ -44,7 +46,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
                                      validators=[UniqueValidator(queryset=User.objects.all())])
 
     def validate_code(self, code):
-        verify_records = EmailVerifyRecord.objects.filter(email=self.initial_data['username']).order_by('-create_time')
+        verify_records = EmailVerifyRecord.objects.filter(email=self.initial_data['email']).order_by('-create_time')
         if verify_records:
             last_record = verify_records[0]
             five_minutes_age = datetime.datetime.now() - datetime.timedelta(hours=0, minutes=5, seconds=0)
@@ -56,13 +58,12 @@ class UserRegisterSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError('验证码错误')
 
     def validate(self, attrs):
-        attrs['email'] = attrs['username']
         del attrs['code']
         return attrs
 
     class Meta:
         model = User
-        fields = ('username', 'code', 'password')
+        fields = ('username', 'email', 'code', 'password')
 
 
 class UserDetailSerializer(serializers.ModelSerializer):

@@ -1,4 +1,6 @@
 from rest_framework import mixins, viewsets, permissions
+from rest_framework.authentication import SessionAuthentication
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 from .serializers import CategorySerializer, ArticleSerializer
 from .models import Category, Article
@@ -26,6 +28,7 @@ class ArticleViewSet(viewsets.ModelViewSet):
     """
     queryset = Article.objects.all()
     serializer_class = ArticleSerializer
+    authentication_classes = (JSONWebTokenAuthentication, SessionAuthentication)
 
     def get_permissions(self):
         if self.action == 'create':

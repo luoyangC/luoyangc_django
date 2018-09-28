@@ -20,6 +20,7 @@ django-mdeditor = "*"
 djangorestframework = "*"
 coreapi = "*"
 djangorestframework-jwt = "*"
+django-cors-headers = "*"
 
 [dev-packages]
 

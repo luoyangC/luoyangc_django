@@ -6,7 +6,8 @@ from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from .models import Fav, Comment, Reply
 from .serializers import FavSerializer, CommentSerializer, CommentDetailSerializer
 from .serializers import ReplySerializer, ReplyDetailSerializer
-from utils.permissions import IsOwnerOrReadOnly
+from utils.permissions import IsOwnerOrReadOnly, IsFromOrReadOnly
+
 
 # Create your views here.
 
@@ -22,7 +23,8 @@ class FavViewSet(mixins.ListModelMixin, mixins.CreateModelMixin,
     """
     permission_classes = (permissions.IsAuthenticated, IsOwnerOrReadOnly)
     authentication_classes = (JSONWebTokenAuthentication, SessionAuthentication)
-    lookup_field = 'article_id'
+    filter_backends = (DjangoFilterBackend,)
+    filter_fields = ('article',)
 
     serializer_class = FavSerializer
 
@@ -40,7 +42,8 @@ class CommentViewSet(mixins.ListModelMixin, mixins.CreateModelMixin,
     retrieve: 评论详情
     """
     queryset = Comment.objects.all()
-    permission_classes = (permissions.IsAuthenticated, IsOwnerOrReadOnly)
+    authentication_classes = (JSONWebTokenAuthentication, SessionAuthentication)
+    permission_classes = (IsOwnerOrReadOnly, )
     filter_backends = (DjangoFilterBackend, )
     filter_fields = ('article', )
 
@@ -61,7 +64,8 @@ class ReplyViewSet(mixins.ListModelMixin, mixins.CreateModelMixin,
     retrieve: 回复详情
     """
     queryset = Reply.objects.all()
-    permission_classes = (IsOwnerOrReadOnly,)
+    authentication_classes = (JSONWebTokenAuthentication, SessionAuthentication)
+    permission_classes = (IsFromOrReadOnly,)
 
     def get_serializer_class(self):
         if self.action == 'create':

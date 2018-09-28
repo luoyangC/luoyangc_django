@@ -10,4 +10,4 @@ class Index(View):
     """
     @staticmethod
     def get(request):
-        return render(request, 'index.html')
+        return render(request, 'demo.html')

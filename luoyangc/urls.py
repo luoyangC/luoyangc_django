@@ -28,6 +28,8 @@ router.register('category', article_views.CategoryViewSet, base_name='category')
 router.register('article', article_views.ArticleViewSet, base_name='Article')
 # 收藏
 router.register('fav', operation_views.FavViewSet, base_name='fav')
+# 点赞
+router.register('like', operation_views.LikeViewSet, base_name='like')
 # 评论
 router.register('comment', operation_views.CommentViewSet, base_name='comment')
 # 回复

@@ -28,16 +28,16 @@ class ArticleSerializer(serializers.ModelSerializer):
     is_fav = serializers.SerializerMethodField()
 
     def get_is_like(self, obj):
-        user = self.context['request']._user
+        user = self.context['request'].user
         if not isinstance(user, User):
             return False
-        like = Like.objects.filter(user=user, like_id=obj.id, like_type='article')
+        like = Like.objects.filter(user=user, like_id=obj.id, like_type='article').first()
         if not like:
             return False
-        return True
+        return like.id
 
     def get_is_fav(self, obj):
-        user = self.context['request']._user
+        user = self.context['request'].user
         if not isinstance(user, User):
             return False
         fav = Fav.objects.filter(user=user, article=obj).first()

@@ -3,9 +3,9 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.authentication import SessionAuthentication
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
-from .models import Fav, Comment, Reply
+from .models import Fav, Comment, Reply, Like
 from .serializers import FavSerializer, CommentSerializer, CommentDetailSerializer
-from .serializers import ReplySerializer, ReplyDetailSerializer
+from .serializers import ReplySerializer, ReplyDetailSerializer, LikeSerializer
 from utils.permissions import IsOwnerOrReadOnly, IsFromOrReadOnly
 
 
@@ -23,13 +23,26 @@ class FavViewSet(mixins.ListModelMixin, mixins.CreateModelMixin,
     """
     permission_classes = (permissions.IsAuthenticated, IsOwnerOrReadOnly)
     authentication_classes = (JSONWebTokenAuthentication, SessionAuthentication)
-    filter_backends = (DjangoFilterBackend,)
-    filter_fields = ('article',)
 
     serializer_class = FavSerializer
 
     def get_queryset(self):
         return Fav.objects.filter(user=self.request.user)
+
+
+class LikeViewSet(mixins.CreateModelMixin, mixins.DestroyModelMixin,
+                  viewsets.GenericViewSet):
+    """
+    create: 点赞
+    delete: 取消点赞
+    """
+    permission_classes = (permissions.IsAuthenticated, IsOwnerOrReadOnly)
+    authentication_classes = (JSONWebTokenAuthentication, SessionAuthentication)
+
+    serializer_class = LikeSerializer
+
+    def get_queryset(self):
+        return Like.objects.filter(user=self.request.user)
 
 
 class CommentViewSet(mixins.ListModelMixin, mixins.CreateModelMixin,

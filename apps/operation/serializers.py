@@ -19,7 +19,16 @@ class FavSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Fav
-        exclude = ('status', )
+        exclude = ('status', 'create_time')
+
+
+class LikeSerializer(serializers.ModelSerializer):
+
+    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
+
+    class Meta:
+        model = Like
+        exclude = ('status', 'create_time')
 
 
 class ReplySerializer(serializers.ModelSerializer):
@@ -39,13 +48,13 @@ class ReplyDetailSerializer(serializers.ModelSerializer):
     is_like = serializers.SerializerMethodField()
 
     def get_is_like(self, obj):
-        user = self.context['request']._user
+        user = self.context['request'].user
         if not isinstance(user, User):
             return False
-        like = Like.objects.filter(user=user, like_id=obj.id, like_type='reply')
+        like = Like.objects.filter(user=user, like_id=obj.id, like_type='reply').first()
         if not like:
             return False
-        return True
+        return like.id
 
     def get_to_user(self, obj):
         user = User.objects.filter(id=obj.to_user_id)[0]
@@ -78,13 +87,13 @@ class CommentDetailSerializer(serializers.ModelSerializer):
     is_like = serializers.SerializerMethodField()
 
     def get_is_like(self, obj):
-        user = self.context['request']._user
+        user = self.context['request'].user
         if not isinstance(user, User):
             return False
-        like = Like.objects.filter(user=user, like_id=obj.id, like_type='comment')
+        like = Like.objects.filter(user=user, like_id=obj.id, like_type='comment').first()
         if not like:
             return False
-        return True
+        return like.id
 
     class Meta:
         model = Comment

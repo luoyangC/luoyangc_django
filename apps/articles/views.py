@@ -1,5 +1,6 @@
 from rest_framework import mixins, viewsets, permissions
 from rest_framework.authentication import SessionAuthentication
+from rest_framework.response import Response
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 from .serializers import CategorySerializer, ArticleSerializer
@@ -34,3 +35,10 @@ class ArticleViewSet(viewsets.ModelViewSet):
         if self.action == 'create':
             return [permissions.IsAdminUser(), IsOwnerOrReadOnly()]
         return [IsOwnerOrReadOnly()]
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        instance.view_nums += 1
+        instance.save()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)

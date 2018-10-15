@@ -4,7 +4,7 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
-from .models import Fav, Comment, Reply, Like
+from .models import Fav, Comment, Reply, Like, Message, Dynamics
 from users.serializers import UserDetailSerializer
 
 __author__ = '骆杨'
@@ -98,3 +98,29 @@ class CommentDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = '__all__'
+
+
+class MessageSerializer(serializers.ModelSerializer):
+
+    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
+
+    author = serializers.SerializerMethodField()
+
+    def get_author(self, obj):
+        if obj.anonymous:
+            user = User.objects.filter(id=999).first()
+        else:
+            user = obj.user
+        user_serializer = UserDetailSerializer(user, context={'request': self.context['request']})
+        return user_serializer.data
+
+    class Meta:
+        model = Message
+        exclude = ('status', )
+
+
+class DynamicsSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Dynamics
+        exclude = ('status', )

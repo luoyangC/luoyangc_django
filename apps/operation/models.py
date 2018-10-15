@@ -1,4 +1,5 @@
 from django.db import models
+from mdeditor.fields import MDTextField
 
 from home.models import Base
 from apps.users.models import UserProfile
@@ -79,3 +80,33 @@ class Like(Base):
 
     def __str__(self):
         return str(self.like_id)
+
+
+class Message(Base):
+    """
+    留言
+    """
+    user = models.ForeignKey(UserProfile, default=999, on_delete=models.CASCADE, verbose_name='用户')
+    content = models.TextField(verbose_name='留言信息')
+    anonymous = models.BooleanField(default=True, verbose_name='是否匿名')
+
+    class Meta:
+        verbose_name = '留言'
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.content
+
+
+class Dynamics(Base):
+    """
+    动态
+    """
+    content = MDTextField(null=True, blank=False, verbose_name='动态内容')
+
+    class Meta:
+        verbose_name = '动态'
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.content

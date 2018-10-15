@@ -3,9 +3,9 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.authentication import SessionAuthentication
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
-from .models import Fav, Comment, Reply, Like
-from .serializers import FavSerializer, CommentSerializer, CommentDetailSerializer
-from .serializers import ReplySerializer, ReplyDetailSerializer, LikeSerializer
+from .models import Fav, Comment, Reply, Like, Message, Dynamics
+from .serializers import FavSerializer, CommentSerializer, CommentDetailSerializer, DynamicsSerializer
+from .serializers import ReplySerializer, ReplyDetailSerializer, LikeSerializer, MessageSerializer
 from utils.permissions import IsOwnerOrReadOnly, IsFromOrReadOnly
 
 
@@ -84,3 +84,21 @@ class ReplyViewSet(mixins.ListModelMixin, mixins.CreateModelMixin,
         if self.action == 'create':
             return ReplySerializer
         return ReplyDetailSerializer
+
+
+class MessageViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, viewsets.GenericViewSet):
+    """
+    list: 留言列表
+    create: 添加留言
+    """
+    queryset = Message.objects.all()
+    authentication_classes = (JSONWebTokenAuthentication, SessionAuthentication)
+    serializer_class = MessageSerializer
+
+
+class DynamicsViewSet (mixins.ListModelMixin, viewsets.GenericViewSet):
+    """
+    list: 动态列表
+    """
+    queryset = Dynamics.objects.all()
+    serializer_class = DynamicsSerializer

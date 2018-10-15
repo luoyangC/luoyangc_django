@@ -1,5 +1,6 @@
 """
   Created by Amor on 2018-09-23
+  发送邮件的脚本
 """
 import random
 

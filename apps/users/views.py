@@ -23,7 +23,9 @@ class EmailCodeViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
         return Response({'email': email}, status=status.HTTP_201_CREATED)
 
 
-class UserViewSet(mixins.CreateModelMixin, mixins.RetrieveModelMixin, mixins.UpdateModelMixin, viewsets.GenericViewSet):
+class UserViewSet(mixins.ListModelMixin, mixins.CreateModelMixin,
+                  mixins.RetrieveModelMixin, mixins.UpdateModelMixin,
+                  viewsets.GenericViewSet):
 
     queryset = User.objects.all()
     authentication_classes = (JSONWebTokenAuthentication, SessionAuthentication)
@@ -41,3 +43,9 @@ class UserViewSet(mixins.CreateModelMixin, mixins.RetrieveModelMixin, mixins.Upd
         if self.action == 'create':
             return []
         return [IsSelfOrReadOnly()]
+
+    def list(self, request, *args, **kwargs):
+        queryset = request.user
+
+        serializer = self.get_serializer(queryset)
+        return Response(serializer.data)

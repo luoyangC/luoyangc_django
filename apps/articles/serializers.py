@@ -18,14 +18,53 @@ class CategorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Category
-        fields = ('title', 'info')
+        exclude = ('status', 'create_time')
+
+
+class ArchiveSerializer(serializers.Serializer):
+
+    def create(self, validated_data):
+        pass
+
+    def update(self, instance, validated_data):
+        pass
+
+    archive = serializers.CharField(read_only=True)
+
+
+class TagSerializer(serializers.Serializer):
+    def create(self, validated_data):
+        pass
+
+    def update(self, instance, validated_data):
+        pass
+    tag = serializers.CharField()
+
+
+class CreateArticleSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Article
+        fields = ('id', 'title', 'user', 'category', 'content')
+
+
+class ArticleProfileSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Article
+        fields = ('id', 'title', 'profile', 'update_time')
 
 
 class ArticleSerializer(serializers.ModelSerializer):
 
-    user = UserDetailSerializer()
+    user = serializers.SerializerMethodField()
     is_like = serializers.SerializerMethodField()
     is_fav = serializers.SerializerMethodField()
+    is_author = serializers.SerializerMethodField()
+
+    def get_user(self, obj):
+        user = UserDetailSerializer(obj.user, context={'request': self.context['request']})
+        return user.data
 
     def get_is_like(self, obj):
         user = self.context['request'].user
@@ -44,6 +83,12 @@ class ArticleSerializer(serializers.ModelSerializer):
         if not fav:
             return False
         return fav.id
+
+    def get_is_author(self, obj):
+        user = self.context['request'].user
+        if user == obj.user:
+            return True
+        return False
 
     class Meta:
         model = Article

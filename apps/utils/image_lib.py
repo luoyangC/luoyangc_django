@@ -1,5 +1,6 @@
 """
   Created by Amor on 2018-09-30
+  图片处理的脚本
 """
 import os
 from PIL import Image

@@ -10,7 +10,7 @@ from rest_framework.documentation import include_docs_urls
 from rest_framework_jwt.views import obtain_jwt_token
 
 from luoyangc.settings import MEDIA_ROOT
-from home.views import Index
+from home.views import IndexView, UploadView
 from users import views as user_views
 from articles import views as article_views
 from operation import views as operation_views
@@ -24,6 +24,12 @@ router.register('code', user_views.EmailCodeViewSet, base_name='code')
 router.register('user', user_views.UserViewSet, base_name='user')
 # 分类
 router.register('category', article_views.CategoryViewSet, base_name='category')
+# 归档
+router.register('archive', article_views.ArchiveViewSet, base_name='archive')
+# 标签
+router.register('tag', article_views.TagViewSet, base_name='tag')
+# 简介
+router.register('profile', article_views.ArticleProfileViewSet, base_name='profile')
 # 文章
 router.register('article', article_views.ArticleViewSet, base_name='Article')
 # 收藏
@@ -34,11 +40,15 @@ router.register('like', operation_views.LikeViewSet, base_name='like')
 router.register('comment', operation_views.CommentViewSet, base_name='comment')
 # 回复
 router.register('reply', operation_views.ReplyViewSet, base_name='reply')
+# 留言
+router.register('message', operation_views.MessageViewSet, base_name='message')
+# 动态
+router.register('dynamics', operation_views.DynamicsViewSet, base_name='dynamics')
 
 
 urlpatterns = [
     # 主页
-    path('', Index.as_view(), name='index'),
+    path('', IndexView.as_view(), name='index'),
     # 后台管理
     path('admin/', xadmin.site.urls),
     # 站点图标
@@ -53,6 +63,8 @@ urlpatterns = [
     path('docs/', include_docs_urls(title='文档')),
     # 获取授权
     path('api/login/', obtain_jwt_token),
+    # 上传文件
+    path('api/upload/', UploadView.as_view(), name='upload'),
     # API入口
     path('api/', include(router.urls)),
 ]

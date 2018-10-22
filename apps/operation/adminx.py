@@ -16,19 +16,19 @@ class CommentAdmin(object):
 
 
 class ReplyAdmin(object):
-    pass
+    model_icon = 'fa fa-comments-o'
 
 
 class LikeAdmin(object):
-    pass
+    model_icon = 'fa fa-thumbs-up'
 
 
 class MessageAdmin(object):
-    pass
+    model_icon = 'fa fa-archive'
 
 
 class DynamicsAdmin(object):
-    pass
+    model_icon = 'fa fa-at'
 
 
 xadmin.site.register(Fav, FavAdmin)

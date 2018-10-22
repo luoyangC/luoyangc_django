@@ -54,7 +54,7 @@ class Reply(Base):
                               null=True, blank=True, verbose_name='回复图片')
 
     class Meta:
-        verbose_name = '评论'
+        verbose_name = '回复'
         verbose_name_plural = verbose_name
 
     def __str__(self):

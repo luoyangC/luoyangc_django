@@ -4,7 +4,9 @@ from rest_framework import mixins, viewsets, permissions
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
+from rest_framework.filters import OrderingFilter
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
+from rest_framework_extensions.cache.mixins import CacheResponseMixin
 from django_filters.rest_framework import DjangoFilterBackend
 
 from .serializers import CategorySerializer, ArticleSerializer, ArchiveSerializer
@@ -23,7 +25,7 @@ class ArticlePagination(PageNumberPagination):
     max_page_size = 10
 
 
-class CategoryViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, viewsets.GenericViewSet):
+class CategoryViewSet(CacheResponseMixin, mixins.ListModelMixin, mixins.CreateModelMixin, viewsets.GenericViewSet):
     """
     list: 文章分类列表页
     create: 创建一个文章类别
@@ -39,11 +41,11 @@ class CategoryViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, viewsets.G
         return [IsOwnerOrReadOnly()]
 
 
-class ArticleProfileViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
+class ArticleProfileViewSet(CacheResponseMixin, mixins.ListModelMixin, viewsets.GenericViewSet):
     """
     list: 文章简介列表
     """
-    queryset = Article.objects.all()
+    queryset = Article.objects.all().order_by('-update_time')
     authentication_classes = (JSONWebTokenAuthentication, SessionAuthentication)
     serializer_class = ArticleProfileSerializer
 
@@ -56,12 +58,13 @@ class ArticleViewSet(viewsets.ModelViewSet):
     delete: 删除一个文章
     retrieve: 文章详情
     """
-    queryset = Article.objects.all()
+    queryset = Article.objects.all().order_by('id')
     authentication_classes = (JSONWebTokenAuthentication, SessionAuthentication)
     pagination_class = ArticlePagination
 
-    filter_backends = (DjangoFilterBackend,)
+    filter_backends = (DjangoFilterBackend, OrderingFilter)
     filter_class = ArticleFilter
+    ordering_fields = ('update_time', 'like_nums')
 
     def get_serializer_class(self):
         if self.action == 'create':
@@ -81,7 +84,7 @@ class ArticleViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 
-class ArchiveViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
+class ArchiveViewSet(CacheResponseMixin, mixins.ListModelMixin, viewsets.GenericViewSet):
     """
     文章归档
     """

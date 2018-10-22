@@ -21,6 +21,10 @@ djangorestframework = "*"
 coreapi = "*"
 djangorestframework-jwt = "*"
 django-cors-headers = "*"
+gunicorn = "*"
+gevent = "*"
+drf-extensions = "*"
+django-redis = "*"
 
 [dev-packages]
 

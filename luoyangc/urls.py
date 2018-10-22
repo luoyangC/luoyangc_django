@@ -10,7 +10,7 @@ from rest_framework.documentation import include_docs_urls
 from rest_framework_jwt.views import obtain_jwt_token
 
 from luoyangc.settings import MEDIA_ROOT
-from home.views import IndexView, UploadView
+from home.views import UploadView
 from users import views as user_views
 from articles import views as article_views
 from operation import views as operation_views
@@ -48,7 +48,7 @@ router.register('dynamics', operation_views.DynamicsViewSet, base_name='dynamics
 
 urlpatterns = [
     # 主页
-    path('', IndexView.as_view(), name='index'),
+    path('', RedirectView.as_view(url='api/')),
     # 后台管理
     path('admin/', xadmin.site.urls),
     # 站点图标

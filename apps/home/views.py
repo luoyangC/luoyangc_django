@@ -41,6 +41,7 @@ class UploadView(APIView):
 
         code = 0
         msg = 'fail'
+        host_url = 'http://127.0.0.1:8000/'
 
         file = request.FILES.get('file', None)
 
@@ -71,7 +72,7 @@ class UploadView(APIView):
                 user.image = local_file[6:]
                 user.save()
 
-                return Response({'code': code, 'message': msg, 'url': 'http://127.0.0.1:8000/' + local_file})
+                return Response({'code': code, 'message': msg, 'url': host_url + local_file})
 
             return Response({'code': 201, 'message': 'type error'})
 
@@ -95,7 +96,7 @@ class UploadView(APIView):
                     destination.write(chunk)
                 destination.close()
 
-                return Response({'code': code, 'message': msg, 'url': 'http://127.0.0.1:8000/' + local_file})
+                return Response({'code': code, 'message': msg, 'url': host_url + local_file})
 
             return Response({'code': 201, 'message': 'type error'})
 
@@ -119,6 +120,6 @@ class UploadView(APIView):
                     destination.write(chunk)
                 destination.close()
 
-                return Response({'code': code, 'message': msg, 'url': 'http://127.0.0.1:8000/' + local_file})
+                return Response({'code': code, 'message': msg, 'url': host_url + local_file})
 
             return Response({'code': 201, 'message': 'type error'})

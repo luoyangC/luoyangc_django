@@ -54,7 +54,7 @@ class CommentViewSet(mixins.ListModelMixin, mixins.CreateModelMixin,
     delete: 删除评论
     retrieve: 评论详情
     """
-    queryset = Comment.objects.all()
+    queryset = Comment.objects.all().order_by('-create_time')
     authentication_classes = (JSONWebTokenAuthentication, SessionAuthentication)
     permission_classes = (IsOwnerOrReadOnly, )
     filter_backends = (DjangoFilterBackend, )
@@ -91,7 +91,7 @@ class MessageViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, viewsets.Ge
     list: 留言列表
     create: 添加留言
     """
-    queryset = Message.objects.all()
+    queryset = Message.objects.all().order_by('-create_time')
     authentication_classes = (JSONWebTokenAuthentication, SessionAuthentication)
     serializer_class = MessageSerializer
 
@@ -100,5 +100,5 @@ class DynamicsViewSet (mixins.ListModelMixin, viewsets.GenericViewSet):
     """
     list: 动态列表
     """
-    queryset = Dynamics.objects.all()
+    queryset = Dynamics.objects.all().order_by('-create_time')
     serializer_class = DynamicsSerializer

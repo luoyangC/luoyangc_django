@@ -14,6 +14,8 @@ from rest_framework.views import APIView
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 from utils.random_str import generate_random_str
+from utils.tulin_talk import talk
+from luoyangc.settings import HOST_URL
 
 
 User = get_user_model()
@@ -28,11 +30,17 @@ class IndexView(View):
         return render(request, 'demo.html')
 
 
+class TalkView(APIView):
+    """图灵机器人接口"""
+    def post(self, request):
+        result = talk(request.data['info'], request.data['userid'])
+        return Response({'code': 100000, 'text': result})
+
+
 class UploadView(APIView):
     """
     上传文件接口
     """
-
     parser_classes = (MultiPartParser,)
     permission_classes = (permissions.IsAuthenticated,)
     authentication_classes = (JSONWebTokenAuthentication, SessionAuthentication)
@@ -41,7 +49,6 @@ class UploadView(APIView):
 
         code = 0
         msg = 'fail'
-        host_url = 'http://127.0.0.1:8000/'
 
         file = request.FILES.get('file', None)
 
@@ -72,7 +79,7 @@ class UploadView(APIView):
                 user.image = local_file[6:]
                 user.save()
 
-                return Response({'code': code, 'message': msg, 'url': host_url + local_file})
+                return Response({'code': code, 'message': msg, 'url': HOST_URL + local_file})
 
             return Response({'code': 201, 'message': 'type error'})
 
@@ -96,7 +103,7 @@ class UploadView(APIView):
                     destination.write(chunk)
                 destination.close()
 
-                return Response({'code': code, 'message': msg, 'url': host_url + local_file})
+                return Response({'code': code, 'message': msg, 'url': HOST_URL + local_file})
 
             return Response({'code': 201, 'message': 'type error'})
 
@@ -120,6 +127,6 @@ class UploadView(APIView):
                     destination.write(chunk)
                 destination.close()
 
-                return Response({'code': code, 'message': msg, 'url': host_url + local_file})
+                return Response({'code': code, 'message': msg, 'url': HOST_URL + local_file})
 
             return Response({'code': 201, 'message': 'type error'})

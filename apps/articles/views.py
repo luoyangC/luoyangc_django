@@ -58,7 +58,7 @@ class ArticleViewSet(viewsets.ModelViewSet):
     delete: 删除一个文章
     retrieve: 文章详情
     """
-    queryset = Article.objects.all().order_by('id')
+    queryset = Article.objects.all().order_by('-update_time')
     authentication_classes = (JSONWebTokenAuthentication, SessionAuthentication)
     pagination_class = ArticlePagination
 
@@ -77,10 +77,26 @@ class ArticleViewSet(viewsets.ModelViewSet):
         return [IsOwnerOrReadOnly()]
 
     def retrieve(self, request, *args, **kwargs):
+        # 重写查看详情逻辑，每次查看详情，该文章阅读数加1
         instance = self.get_object()
         instance.view_nums += 1
         instance.save()
         serializer = self.get_serializer(instance)
+        return Response(serializer.data)
+
+    def update(self, request, *args, **kwargs):
+        # 重写更新逻辑，只有当文章内容发生改变时，才修改文章的更新时间
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        if len(request.data['content']) != len(instance.content):
+            instance.update_time = datetime.now()
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+
+        if getattr(instance, '_prefetched_objects_cache', None):
+            instance._prefetched_objects_cache = {}
+
         return Response(serializer.data)
 
 
@@ -91,6 +107,7 @@ class ArchiveViewSet(CacheResponseMixin, mixins.ListModelMixin, viewsets.Generic
     queryset = Article.objects.all()
 
     def list(self, request, *args, **kwargs):
+        # 重写查看列表逻辑，返回由年份和月份组成的一个datetime类型的集合
         queryset = self.filter_queryset(self.get_queryset())
 
         page = self.paginate_queryset(queryset)
@@ -114,6 +131,7 @@ class TagViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     queryset = Article.objects.all()
 
     def list(self, request, *args, **kwargs):
+        # 重写查看列表逻辑，提取并返回所有文章的tag
         queryset = self.filter_queryset(self.get_queryset())
 
         tag_list = []

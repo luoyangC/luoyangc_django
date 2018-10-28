@@ -3,14 +3,14 @@ luoyangc URL Configuration
 """
 import xadmin
 from django.urls import path, include
-from django.views.generic import RedirectView
+from django.views.generic import RedirectView, TemplateView
 from django.views.static import serve
 from rest_framework.routers import DefaultRouter
 from rest_framework.documentation import include_docs_urls
 from rest_framework_jwt.views import obtain_jwt_token
 
 from luoyangc.settings import MEDIA_ROOT
-from home.views import UploadView
+from home.views import UploadView, TalkView
 from users import views as user_views
 from articles import views as article_views
 from operation import views as operation_views
@@ -48,7 +48,7 @@ router.register('dynamics', operation_views.DynamicsViewSet, base_name='dynamics
 
 urlpatterns = [
     # 主页
-    path('', RedirectView.as_view(url='api/')),
+    path('', TemplateView.as_view(template_name='index.html')),
     # 后台管理
     path('admin/', xadmin.site.urls),
     # 站点图标
@@ -65,6 +65,8 @@ urlpatterns = [
     path('api/login/', obtain_jwt_token),
     # 上传文件
     path('api/upload/', UploadView.as_view(), name='upload'),
+    # 图灵机器人接口
+    path('api/talk/', TalkView.as_view(), name='talk'),
     # API入口
     path('api/', include(router.urls)),
 ]

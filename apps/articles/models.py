@@ -3,6 +3,7 @@ from django.db import models
 from home.models import Base
 from apps.users.models import UserProfile
 from mdeditor.fields import MDTextField
+from luoyangc.settings import HOST_URL
 
 # Create your models here.
 
@@ -31,7 +32,7 @@ class Article(Base):
     profile = models.TextField(null=True, blank=True, verbose_name='文章简介')
     image = models.ImageField(max_length=100, upload_to='image/article/%Y/%m',
                               null=True, blank=True, verbose_name='封面图')
-    image_url = models.CharField(max_length=100, default='http://127.0.0.1:8000/media/image/article/default/0.png',
+    image_url = models.CharField(max_length=100, default=HOST_URL + 'media/image/article/default/0.png',
                                  verbose_name='封面图地址')
     update_time = models.DateTimeField(auto_now_add=True, verbose_name='更新时间')
 

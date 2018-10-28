@@ -3,6 +3,8 @@
 """
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
+from rest_framework.serializers import raise_errors_on_nested_writes
+from rest_framework.utils import model_meta
 
 from .models import Category, Article
 from apps.users.serializers import UserDetailSerializer
@@ -52,7 +54,7 @@ class ArticleProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Article
-        fields = ('id', 'title', 'profile', 'update_time')
+        fields = ('id', 'title', 'profile', 'update_time', 'tags')
 
 
 class ArticleSerializer(serializers.ModelSerializer):

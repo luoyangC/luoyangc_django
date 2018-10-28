@@ -200,3 +200,6 @@ JWT_AUTH = {
 
 # 线上地址
 HOST_URL = '*'
+
+# 图灵机器人
+API_KEY = '*'

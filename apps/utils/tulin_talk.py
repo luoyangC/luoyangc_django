@@ -4,6 +4,8 @@
 import json
 import requests
 
+from luoyangc.settings import API_KEY
+
 __author__ = '骆杨'
 
 s = requests.session()
@@ -16,7 +18,7 @@ def talk(content, user_id):
             "inputText": {"text": content}
         },
         "userInfo": {
-            "apiKey": "bb77d7d4ac8b4f569ec81a46f3bb2593",
+            "apiKey": API_KEY,
             "userId": user_id
         }
     }

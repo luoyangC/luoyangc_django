@@ -11,8 +11,8 @@ class Fav(Base):
     """
     用户收藏
     """
-    article = models.ForeignKey(Article, related_name='favs', on_delete=models.CASCADE, verbose_name='收藏的文章')
     user = models.ForeignKey(UserProfile, related_name='favs', on_delete=models.CASCADE, verbose_name='收藏的用户')
+    article = models.ForeignKey(Article, related_name='favs', on_delete=models.CASCADE, verbose_name='收藏的文章')
 
     class Meta:
         verbose_name = '收藏'
@@ -26,12 +26,11 @@ class Comment(Base):
     """
     用户评论
     """
-    article = models.ForeignKey(Article, related_name='comments', on_delete=models.CASCADE, verbose_name='评论的文章')
-    user = models.ForeignKey(UserProfile, related_name='comments', on_delete=models.CASCADE, verbose_name='评论者')
-    image = models.ImageField(max_length=100, upload_to='image/comment/%Y/%m',
-                              null=True, blank=True, verbose_name='评论图片')
     content = models.TextField(verbose_name='评论内容')
     like_nums = models.IntegerField(default=0, verbose_name='点赞数')
+
+    user = models.ForeignKey(UserProfile, related_name='comments', on_delete=models.CASCADE, verbose_name='评论者')
+    article = models.ForeignKey(Article, related_name='comments', on_delete=models.CASCADE, verbose_name='评论的文章')
 
     class Meta:
         verbose_name = '评论'
@@ -45,13 +44,12 @@ class Reply(Base):
     """
     用户回复
     """
-    comment = models.ForeignKey(Comment, related_name='replys', on_delete=models.CASCADE, verbose_name='评论')
-    to_user_id = models.IntegerField(null=False, blank=False, verbose_name='接收者')
-    from_user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, verbose_name='发送者')
     content = models.TextField(verbose_name='回复内容')
     like_nums = models.IntegerField(default=0, verbose_name='点赞数')
-    image = models.ImageField(max_length=100, upload_to='image/reply/%Y/%m',
-                              null=True, blank=True, verbose_name='回复图片')
+
+    to_user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='reply_to', verbose_name='发送者')
+    from_user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='reply_from', verbose_name='发送者')
+    comment = models.ForeignKey(Comment, related_name='replys', on_delete=models.CASCADE, verbose_name='评论')
 
     class Meta:
         verbose_name = '回复'
@@ -86,9 +84,10 @@ class Message(Base):
     """
     留言
     """
-    user = models.ForeignKey(UserProfile, default=999, on_delete=models.CASCADE, verbose_name='用户')
     content = models.TextField(verbose_name='留言信息')
     anonymous = models.BooleanField(default=True, verbose_name='是否匿名')
+
+    user = models.ForeignKey(UserProfile, default=999, on_delete=models.CASCADE, verbose_name='用户')
 
     class Meta:
         verbose_name = '留言'

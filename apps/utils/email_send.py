@@ -4,8 +4,9 @@
 """
 import random
 
+from django.core.cache import cache
 from django.core.mail import EmailMultiAlternatives
-from apps.users.models import EmailVerifyRecord
+
 from luoyangc.settings import EMAIL_FROM
 
 __author__ = '骆杨'
@@ -29,6 +30,6 @@ def send_email(email, send_type='register'):
 
 
 def make_random_code(email, send_type):
-    code = random.randint(100000, 999999)
-    EmailVerifyRecord.objects.create(code=code, email=email, send_type=send_type)
+    code = str(random.randint(100000, 999999))
+    cache.set(email, (send_type, code), timeout=60 * 5)
     return code

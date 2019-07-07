@@ -38,14 +38,21 @@ class ReplySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Reply
-        fields = ('comment', 'to_user_id', 'from_user', 'content', 'like_nums')
+        fields = ('comment', 'to_user', 'from_user', 'content', 'like_nums')
 
 
 class ReplyDetailSerializer(serializers.ModelSerializer):
 
-    from_user = UserDetailSerializer()
-    to_user = serializers.SerializerMethodField()
-    is_like = serializers.SerializerMethodField()
+    to_user_id = serializers.IntegerField(write_only=True, label='接收者')
+    from_user = UserDetailSerializer(read_only=True)
+    to_user = UserDetailSerializer(read_only=True)
+    is_like = serializers.SerializerMethodField(read_only=True)
+
+    def validate_to_user_id(self, to_user_id):
+        to_user = User.objects.filter(id=to_user_id).first()
+        if not isinstance(to_user, User):
+            raise serializers.ValidationError('没有找到该用户')
+        return to_user_id
 
     def get_is_like(self, obj):
         user = self.context['request'].user
@@ -62,12 +69,13 @@ class ReplyDetailSerializer(serializers.ModelSerializer):
         return to_user_serializer.data
 
     def validate(self, attrs):
+        attrs['to_user'] = User.objects.filter(id=attrs['to_user_id']).first()
         del attrs['to_user_id']
         return attrs
 
     class Meta:
         model = Reply
-        fields = '__all__'
+        exclude = ('status',)
 
 
 class CommentSerializer(serializers.ModelSerializer):
@@ -81,10 +89,9 @@ class CommentSerializer(serializers.ModelSerializer):
 
 class CommentDetailSerializer(serializers.ModelSerializer):
 
-    user = UserDetailSerializer()
-    replys = ReplyDetailSerializer(many=True)
-
-    is_like = serializers.SerializerMethodField()
+    user = UserDetailSerializer(read_only=True)
+    is_like = serializers.SerializerMethodField(read_only=True)
+    reply_nums = serializers.SerializerMethodField(read_only=True)
 
     def get_is_like(self, obj):
         user = self.context['request'].user
@@ -95,9 +102,13 @@ class CommentDetailSerializer(serializers.ModelSerializer):
             return False
         return like.id
 
+    def get_reply_nums(self, obj):
+        reply_nums = obj.replys.count()
+        return reply_nums
+
     class Meta:
         model = Comment
-        fields = '__all__'
+        exclude = ('status',)
 
 
 class MessageSerializer(serializers.ModelSerializer):

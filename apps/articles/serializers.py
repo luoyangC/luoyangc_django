@@ -1,19 +1,32 @@
 """
   Created by Amor on 2018-09-22
 """
+import random
+
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
-from rest_framework.serializers import raise_errors_on_nested_writes
-from rest_framework.utils import model_meta
 
-from .models import Category, Article
-from apps.users.serializers import UserDetailSerializer
+from articles.models import Category, Article, Sentence
 from operation.models import Like, Fav
+from users.serializers import UserDetailSerializer
+from luoyangc.settings import OSS_URL
 
 __author__ = '骆杨'
 
 
 User = get_user_model()
+
+
+class SentenceSerializer(serializers.ModelSerializer):
+
+    lines = serializers.SerializerMethodField()
+
+    def get_lines(self, obj):
+        return obj.lines.split(' ')
+
+    class Meta:
+        model = Sentence
+        fields = ('lines', )
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -43,13 +56,6 @@ class TagSerializer(serializers.Serializer):
     tag = serializers.CharField()
 
 
-class CreateArticleSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Article
-        fields = ('id', 'title', 'user', 'category', 'content')
-
-
 class ArticleProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -59,10 +65,16 @@ class ArticleProfileSerializer(serializers.ModelSerializer):
 
 class ArticleSerializer(serializers.ModelSerializer):
 
+    image = serializers.SerializerMethodField()
     user = serializers.SerializerMethodField()
     is_like = serializers.SerializerMethodField()
     is_fav = serializers.SerializerMethodField()
     is_author = serializers.SerializerMethodField()
+    category = serializers.SerializerMethodField()
+
+    def get_image(self, obj):
+        random.seed(obj.id)
+        return f'{OSS_URL}/media/image/random/{random.randint(200, 600)}.png'
 
     def get_user(self, obj):
         user = UserDetailSerializer(obj.user, context={'request': self.context['request']})
@@ -88,9 +100,10 @@ class ArticleSerializer(serializers.ModelSerializer):
 
     def get_is_author(self, obj):
         user = self.context['request'].user
-        if user == obj.user:
-            return True
-        return False
+        return user == obj.user
+
+    def get_category(self, obj):
+        return obj.category.title
 
     class Meta:
         model = Article

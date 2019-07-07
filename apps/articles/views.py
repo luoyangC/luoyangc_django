@@ -9,10 +9,10 @@ from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from rest_framework_extensions.cache.mixins import CacheResponseMixin
 from django_filters.rest_framework import DjangoFilterBackend
 
-from .serializers import CategorySerializer, ArticleSerializer, ArchiveSerializer
-from .serializers import CreateArticleSerializer, TagSerializer, ArticleProfileSerializer
-from .models import Category, Article
-from .filters import ArticleFilter
+from articles.serializers import CategorySerializer, ArticleSerializer, ArchiveSerializer
+from articles.serializers import TagSerializer, ArticleProfileSerializer, SentenceSerializer
+from articles.models import Category, Article, Sentence
+from articles.filters import ArticleFilter
 from utils.permissions import IsOwnerOrReadOnly
 
 # Create your views here.
@@ -23,6 +23,12 @@ class ArticlePagination(PageNumberPagination):
     page_size_query_param = 'page_size'
     page_query_param = 'p'
     max_page_size = 10
+
+
+class SentenceViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):
+
+    queryset = Sentence.objects.all()
+    serializer_class = SentenceSerializer
 
 
 class CategoryViewSet(CacheResponseMixin, mixins.ListModelMixin, mixins.CreateModelMixin, viewsets.GenericViewSet):
@@ -66,10 +72,7 @@ class ArticleViewSet(viewsets.ModelViewSet):
     filter_class = ArticleFilter
     ordering_fields = ('update_time', 'like_nums')
 
-    def get_serializer_class(self):
-        if self.action == 'create':
-            return CreateArticleSerializer
-        return ArticleSerializer
+    serializer_class = ArticleSerializer
 
     def get_permissions(self):
         if self.action == 'create':

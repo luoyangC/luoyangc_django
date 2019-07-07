@@ -22,6 +22,8 @@ router = DefaultRouter()
 router.register('code', user_views.EmailCodeViewSet, base_name='code')
 # 用户
 router.register('user', user_views.UserViewSet, base_name='user')
+# 句子
+router.register('sentence', article_views.SentenceViewSet, base_name='sentence')
 # 分类
 router.register('category', article_views.CategoryViewSet, base_name='category')
 # 归档

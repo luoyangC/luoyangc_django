@@ -14,7 +14,7 @@ xlwt = "*"
 xlsxwriter = "*"
 django-import-export = "*"
 future = "*"
-"httplib2" = "*"
+httplib2 = "*"
 pillow = "*"
 django-mdeditor = "*"
 djangorestframework = "*"
@@ -25,8 +25,10 @@ gunicorn = "*"
 gevent = "*"
 drf-extensions = "*"
 django-redis = "*"
+mysqlclient = "1.4.1"
 
 [dev-packages]
+pylint = "*"
 
 [requires]
 python_version = "3.6"

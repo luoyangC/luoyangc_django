@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework.authentication import SessionAuthentication
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
-from users.serializers import User, UserRegisterSerializer, EmailVerifySerializer, UserDetailSerializer
+from users.serializers import User, UserRegisterSerializer, UserDetailSerializer, EmailVerifySerializer
 from utils.email_send import send_email
 from utils.permissions import IsSelfOrReadOnly
 

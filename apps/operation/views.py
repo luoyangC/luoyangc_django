@@ -61,10 +61,10 @@ class CommentViewSet(mixins.ListModelMixin, mixins.CreateModelMixin,
     filter_fields = ('article', )
 
     # 动态配置Serializer
-    def get_serializer_class(self):
-        if self.action == 'create':
-            return CommentSerializer
-        return CommentDetailSerializer
+    serializer_class = CommentDetailSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
 
 class ReplyViewSet(mixins.ListModelMixin, mixins.CreateModelMixin,
@@ -79,11 +79,13 @@ class ReplyViewSet(mixins.ListModelMixin, mixins.CreateModelMixin,
     queryset = Reply.objects.all()
     authentication_classes = (JSONWebTokenAuthentication, SessionAuthentication)
     permission_classes = (IsFromOrReadOnly,)
+    filter_backends = (DjangoFilterBackend,)
+    filter_fields = ('comment',)
 
-    def get_serializer_class(self):
-        if self.action == 'create':
-            return ReplySerializer
-        return ReplyDetailSerializer
+    serializer_class = ReplyDetailSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(from_user=self.request.user)
 
 
 class MessageViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, viewsets.GenericViewSet):
